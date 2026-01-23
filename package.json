@@ -1,7 +1,7 @@
 {
   "name": "to-do-api-express-mongo",
   "version": "1.0.0",
-  "description": "",
+  "description": "An example Express & TypeScript To-Do API powered by the MongoDB Native Driver.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
