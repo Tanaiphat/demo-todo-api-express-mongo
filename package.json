@@ -27,12 +27,14 @@
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "helmet": "^8.1.0",
+    "mongodb": "^7.0.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/mongodb": "^4.0.6",
     "@types/node": "^25.0.10",
     "@typescript-eslint/eslint-plugin": "^8.53.1",
     "@typescript-eslint/parser": "^8.53.1",
