@@ -1,0 +1,28 @@
+### Base URL
+@baseUrl = http://localhost:3000
+
+### Health Check
+GET {{baseUrl}}/health
+
+### Get All Tasks
+GET {{baseUrl}}/api/tasks
+
+### Create Task - Minimal
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "My First Task"
+}
+
+### Create Task - Full
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Complete API Documentation",
+  "description": "Write comprehensive docs for all endpoints",
+  "priority": "high",
+  "status": "in_progress",
+  "dueDate": "2026-02-01"
+}
