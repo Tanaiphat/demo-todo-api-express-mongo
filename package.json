@@ -7,7 +7,7 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/src/server.js",
-    "test": "jest --passWithNoTests",
+    "test": "MONGO_URI=mongodb://localhost:27017/todo_api_test jest --passWithNoTests",
     "prepare": "husky"
   },
   "lint-staged": {

@@ -25,8 +25,8 @@ class Database {
       this.db = this.client.db();
       console.log('🚀 Connected to MongoDB');
 
-      process.on('SIGINT', this.disconnect.bind(this));
-      process.on('SIGTERM', this.disconnect.bind(this));
+      process.on('SIGINT', this.handleSignal.bind(this));
+      process.on('SIGTERM', this.handleSignal.bind(this));
     } catch (error) {
       console.error('❌ MongoDB connection error:', error);
       process.exit(1);
@@ -57,9 +57,15 @@ class Database {
   }
 
   public async disconnect(): Promise<void> {
-    try {
+    if (this.client) {
       await this.client.close();
       console.log('👋 MongoDB connection closed');
+    }
+  }
+
+  private async handleSignal() {
+    try {
+      await this.disconnect();
       process.exit(0);
     } catch (error) {
       console.error('❌ Error during MongoDB disconnection:', error);
