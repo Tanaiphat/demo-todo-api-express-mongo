@@ -1,0 +1,47 @@
+### Base URL
+@baseUrl = http://localhost:3000
+
+### Health Check
+GET {{baseUrl}}/health
+
+### Get All Tasks
+GET {{baseUrl}}/api/tasks
+
+### Get Task by ID (replace with actual ID)
+@taskId = REPLACE_WITH_TASK_ID
+GET {{baseUrl}}/api/tasks/{{taskId}}
+
+### Create Task - Minimal
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "My First Task"
+}
+
+### Create Task - Full
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Complete API Documentation",
+  "description": "Write comprehensive docs for all endpoints",
+  "priority": "high",
+  "status": "in_progress",
+  "dueDate": "2026-02-01"
+}
+
+### Update Task (replace with actual ID)
+PUT {{baseUrl}}/api/tasks/{{taskId}}
+Content-Type: application/json
+
+{
+  "title": "Updated Task Title",
+  "priority": "low"
+}
+
+### Toggle Task Status (replace with actual ID)
+PATCH {{baseUrl}}/api/tasks/{{taskId}}/toggle
+
+### Delete Task (replace with actual ID)
+DELETE {{baseUrl}}/api/tasks/{{taskId}}
