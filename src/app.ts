@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import taskRoutes from './routes/taskRoutes';
+import userRoutes from './routes/userRoutes';
 import { errorHandler } from './middleware/errorHandler';
 
 const app = express();
@@ -17,6 +18,7 @@ app.get('/health', (_req, res) => {
 });
 
 // API Routes
+app.use('/api/auth', userRoutes);
 app.use('/api/tasks', taskRoutes);
 
 // Global Error Handler (must be last)
