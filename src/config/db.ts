@@ -56,6 +56,10 @@ class Database {
     return this.getCollection('projects');
   }
 
+  public get users() {
+    return this.getCollection('users');
+  }
+
   public async disconnect(): Promise<void> {
     if (this.client) {
       await this.client.close();
