@@ -150,4 +150,58 @@ describe('Task Routes Integration', () => {
       expect(check.status).toBe(404);
     });
   });
+
+  describe('User Scoping / Isolation', () => {
+    let userBToken: string;
+
+    beforeAll(async () => {
+      // Create User B
+      const userB = {
+        email: 'userb@example.com',
+        password: 'password123',
+        name: 'User B',
+      };
+      await request(app).post('/api/auth/register').send(userB);
+      const loginRes = await request(app).post('/api/auth/login').send({
+        email: userB.email,
+        password: userB.password,
+      });
+      userBToken = `Bearer ${loginRes.body.data.token}`;
+    });
+
+    it("User B should NOT see User A's tasks", async () => {
+      const res = await request(app).get('/api/tasks').set('Authorization', userBToken);
+
+      expect(res.status).toBe(200);
+      expect(res.body.data).toBeInstanceOf(Array);
+      // Ensure the task created by User A (createdTaskId) is not in User B's list
+      const found = res.body.data.find((t: any) => t._id === createdTaskId);
+      expect(found).toBeUndefined();
+    });
+
+    it("User B should NOT be able to access User A's task by ID", async () => {
+      const res = await request(app)
+        .get(`/api/tasks/${createdTaskId}`)
+        .set('Authorization', userBToken);
+
+      expect(res.status).toBe(404); // Should return 404 (Not Found) effectively hiding existence
+    });
+
+    it("User B should NOT be able to update User A's task", async () => {
+      const res = await request(app)
+        .put(`/api/tasks/${createdTaskId}`)
+        .set('Authorization', userBToken)
+        .send({ title: 'Hacked Title' });
+
+      expect(res.status).toBe(404);
+    });
+
+    it("User B should NOT be able to delete User A's task", async () => {
+      const res = await request(app)
+        .delete(`/api/tasks/${createdTaskId}`)
+        .set('Authorization', userBToken);
+
+      expect(res.status).toBe(404);
+    });
+  });
 });
