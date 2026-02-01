@@ -19,6 +19,7 @@ describe('TaskService', () => {
 
   describe('createTask', () => {
     it('should create a task successfully', async () => {
+      const userId = new ObjectId().toString();
       const taskData = {
         title: 'Test Task',
         priority: 'medium' as const,
@@ -30,10 +31,11 @@ describe('TaskService', () => {
 
       (db.tasks.insertOne as jest.Mock).mockResolvedValue(mockResult);
 
-      const result = await TaskService.createTask(taskData);
+      const result = await TaskService.createTask(userId, taskData);
 
       expect(db.tasks.insertOne).toHaveBeenCalledWith(
         expect.objectContaining({
+          userId: new ObjectId(userId),
           title: 'Test Task',
           createdAt: expect.any(Date),
           updatedAt: expect.any(Date),
@@ -51,6 +53,7 @@ describe('TaskService', () => {
 
   describe('getAllTasks', () => {
     it('should return an array of tasks', async () => {
+      const userId = new ObjectId().toString();
       const mockTasks = [
         { _id: new ObjectId(), title: 'Task 1' },
         { _id: new ObjectId(), title: 'Task 2' },
@@ -60,9 +63,9 @@ describe('TaskService', () => {
         toArray: jest.fn().mockResolvedValue(mockTasks),
       });
 
-      const result = await TaskService.getAllTasks();
+      const result = await TaskService.getAllTasks(userId);
 
-      expect(db.tasks.find).toHaveBeenCalledWith({});
+      expect(db.tasks.find).toHaveBeenCalledWith({ userId: new ObjectId(userId) });
       expect(result).toHaveLength(2);
       expect(result[0].title).toBe('Task 1');
     });
