@@ -23,6 +23,7 @@ export type TaskPriorityType = (typeof TaskPriority)[keyof typeof TaskPriority];
 
 export interface Task {
   _id: ObjectId;
+  userId: ObjectId;
   title: string;
   description?: string;
   status: TaskStatusType;
@@ -33,7 +34,7 @@ export interface Task {
 }
 
 export type CreateTaskInput = Omit<Task, '_id' | 'createdAt' | 'updatedAt'>;
-export type UpdateTaskInput = Partial<Omit<Task, '_id' | 'createdAt' | 'updatedAt'>>;
+export type UpdateTaskInput = Partial<Omit<Task, '_id' | 'userId' | 'createdAt' | 'updatedAt'>>;
 
 // ============ Zod Schemas ============
 
