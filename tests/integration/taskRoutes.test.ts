@@ -175,7 +175,7 @@ describe('Task Routes Integration', () => {
       expect(res.status).toBe(200);
       expect(res.body.data).toBeInstanceOf(Array);
       // Ensure the task created by User A (createdTaskId) is not in User B's list
-      const found = res.body.data.find((t: any) => t._id === createdTaskId);
+      const found = res.body.data.find((t: { _id: string }) => t._id === createdTaskId);
       expect(found).toBeUndefined();
     });
 
