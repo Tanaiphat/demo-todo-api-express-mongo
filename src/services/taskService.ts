@@ -1,6 +1,6 @@
-import { ObjectId } from 'mongodb';
+import { ObjectId, Sort } from 'mongodb';
 import { db } from '../config/db';
-import { CreateTaskDTO, Task, TaskStatus, UpdateTaskDTO } from '../models/task';
+import { CreateTaskDTO, Task, TaskQueryOptions, TaskStatus, UpdateTaskDTO } from '../models/task';
 
 export class TaskService {
   /**
@@ -27,13 +27,48 @@ export class TaskService {
   }
 
   /**
-   * Retrieves all tasks for a specific user.
+   * Retrieves tasks for a specific user with optional filtering, sorting, and pagination.
    * @param userId The ID of the user
-   * @returns An array of tasks belonging to the user
+   * @param options Query options for filtering, sorting, and pagination
+   * @returns An object containing tasks array and pagination metadata
    */
-  static async getAllTasks(userId: string): Promise<Task[]> {
-    const tasks = await db.tasks.find({ userId: new ObjectId(userId) }).toArray();
-    return tasks as Task[];
+  static async getAllTasks(
+    userId: string,
+    options: TaskQueryOptions = {},
+  ): Promise<{ tasks: Task[]; total: number; page: number; limit: number }> {
+    const {
+      status,
+      priority,
+      sortBy = 'createdAt',
+      order = 'desc',
+      page = 1,
+      limit = 10,
+    } = options;
+
+    // Build filter query
+    const filter: Record<string, unknown> = { userId: new ObjectId(userId) };
+    if (status) filter.status = status;
+    if (priority) filter.priority = priority;
+
+    // Build sort options
+    const sortOrder = order === 'asc' ? 1 : -1;
+    const sort: Sort = { [sortBy]: sortOrder };
+
+    // Calculate skip for pagination
+    const skip = (page - 1) * limit;
+
+    // Execute queries
+    const [tasks, total] = await Promise.all([
+      db.tasks.find(filter).sort(sort).skip(skip).limit(limit).toArray(),
+      db.tasks.countDocuments(filter),
+    ]);
+
+    return {
+      tasks: tasks as Task[],
+      total,
+      page,
+      limit,
+    };
   }
 
   /**

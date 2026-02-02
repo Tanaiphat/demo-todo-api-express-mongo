@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { TaskService } from '../services/taskService';
-import { CreateTaskSchema, UpdateTaskSchema } from '../models/task';
+import { CreateTaskSchema, UpdateTaskSchema, TaskQuerySchema } from '../models/task';
 
 interface IdParams {
   id: string;
@@ -8,13 +8,23 @@ interface IdParams {
 
 export class TaskController {
   /**
-   * GET /tasks - Retrieve all tasks for the authenticated user
+   * GET /tasks - Retrieve tasks for the authenticated user with filtering, sorting, and pagination
    */
   static async getTasks(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.user!.userId;
-      const tasks = await TaskService.getAllTasks(userId);
-      res.status(200).json({ success: true, data: tasks });
+      const queryOptions = TaskQuerySchema.parse(req.query);
+      const result = await TaskService.getAllTasks(userId, queryOptions);
+      res.status(200).json({
+        success: true,
+        data: result.tasks,
+        pagination: {
+          total: result.total,
+          page: result.page,
+          limit: result.limit,
+          totalPages: Math.ceil(result.total / result.limit),
+        },
+      });
     } catch (error) {
       next(error);
     }
