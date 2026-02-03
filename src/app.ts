@@ -1,6 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import pinoHttp from 'pino-http';
+import swaggerUi from 'swagger-ui-express';
+import { logger } from './config/logger';
+import { swaggerSpec } from './config/swagger';
 import taskRoutes from './routes/taskRoutes';
 import userRoutes from './routes/userRoutes';
 import statsRoutes from './routes/statsRoutes';
@@ -12,6 +16,10 @@ const app = express();
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+app.use(pinoHttp({ logger }));
+
+// Swagger UI
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Health Check
 app.get('/health', (_req, res) => {
