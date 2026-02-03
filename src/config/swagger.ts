@@ -58,7 +58,7 @@ const options: swaggerJSDoc.Options = {
       },
     ],
   },
-  apis: ['./src/routes/*.ts'], // Path to the API docs
+  apis: ['./src/docs/*.ts'], // Path to the API docs
 };
 
 export const swaggerSpec = swaggerJSDoc(options);
