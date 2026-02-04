@@ -7,7 +7,6 @@ const router = Router();
 // All task routes require authentication
 router.use(authenticate);
 
-// GET /api/tasks - Get all tasks for the authenticated user
 router.get('/', TaskController.getTasks);
 
 // GET /api/tasks/:id - Get a single task
