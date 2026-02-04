@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { db } from '../config/db';
 import { env } from '../config/env';
 import { RegisterDTO, User, UserWithoutPassword } from '../models/user';
+import { logger } from '../config/logger';
 
 const SALT_ROUNDS = 10;
 
@@ -15,6 +16,7 @@ export class UserService {
   static async register(data: RegisterDTO): Promise<UserWithoutPassword> {
     const existingUser = await db.users.findOne({ email: data.email });
     if (existingUser) {
+      logger.warn({ email: data.email }, 'Registration failed: Email already exists');
       throw new Error('User with this email already exists');
     }
 
@@ -37,6 +39,8 @@ export class UserService {
       ...userDoc,
     };
 
+    logger.info({ userId: result.insertedId, email: data.email }, 'User registered successfully');
+
     return userWithoutPassword as UserWithoutPassword;
   }
 
@@ -52,10 +56,12 @@ export class UserService {
   ): Promise<{ user: UserWithoutPassword; token: string }> {
     const user = (await db.users.findOne({ email })) as User | null;
     if (!user) {
+      logger.warn({ email }, 'Login failed: User not found');
       throw new Error('Invalid credentials');
     }
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
+      logger.warn({ email }, 'Login failed: Invalid password');
       throw new Error('Invalid credentials');
     }
 
@@ -66,6 +72,8 @@ export class UserService {
 
     // Return user without password
     const { password: _, ...userWithoutPassword } = user;
+
+    logger.info({ userId: user._id }, 'User logged in successfully');
 
     return {
       user: userWithoutPassword as UserWithoutPassword,

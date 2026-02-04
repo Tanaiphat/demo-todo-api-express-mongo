@@ -54,6 +54,7 @@ export class TaskController {
     try {
       const userId = req.user!.userId;
       const validatedData = CreateTaskSchema.parse(req.body);
+      req.log.info({ userId, title: validatedData.title }, 'Creating new task');
       const task = await TaskService.createTask(userId, validatedData);
       res.status(201).json({ success: true, data: task });
     } catch (error) {
@@ -73,6 +74,7 @@ export class TaskController {
         res.status(404).json({ success: false, message: 'Task not found' });
         return;
       }
+      req.log.info({ userId, taskId: req.params.id }, 'Task updated successfully');
       res.status(200).json({ success: true, data: task });
     } catch (error) {
       next(error);
@@ -90,6 +92,7 @@ export class TaskController {
         res.status(404).json({ success: false, message: 'Task not found' });
         return;
       }
+      req.log.info({ userId, taskId: req.params.id }, 'Task deleted successfully');
       res.status(204).send();
     } catch (error) {
       next(error);
@@ -107,6 +110,10 @@ export class TaskController {
         res.status(404).json({ success: false, message: 'Task not found' });
         return;
       }
+      req.log.info(
+        { userId, taskId: req.params.id, newStatus: task.status },
+        'Task status toggled',
+      );
       res.status(200).json({ success: true, data: task });
     } catch (error) {
       next(error);
