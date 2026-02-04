@@ -13,7 +13,7 @@ afterAll(async () => {
 describe('User Routes Integration', () => {
   const testUser = {
     email: 'integration@test.com',
-    password: 'password123',
+    password: 'Password123!',
     name: 'Integration Test User',
   };
 
@@ -40,7 +40,7 @@ describe('User Routes Integration', () => {
     it('should return 400 for invalid email format', async () => {
       const res = await request(app).post('/api/auth/register').send({
         email: 'invalid-email',
-        password: 'password123',
+        password: 'Password123!',
         name: 'Test',
       });
 
@@ -49,10 +49,10 @@ describe('User Routes Integration', () => {
       expect(res.body.message).toBe('Validation error');
     });
 
-    it('should return 400 for short password', async () => {
+    it('should return 400 for password missing complexity', async () => {
       const res = await request(app).post('/api/auth/register').send({
-        email: 'short@test.com',
-        password: '1234567', // Less than 8 characters
+        email: 'weak@test.com',
+        password: 'password123', // Missing uppercase and special char
         name: 'Test',
       });
 
@@ -63,7 +63,7 @@ describe('User Routes Integration', () => {
     it('should return 400 for missing name', async () => {
       const res = await request(app).post('/api/auth/register').send({
         email: 'noname@test.com',
-        password: 'password123',
+        password: 'Password123!',
       });
 
       expect(res.status).toBe(400);
@@ -100,7 +100,7 @@ describe('User Routes Integration', () => {
     it('should return 401 for non-existent user', async () => {
       const res = await request(app).post('/api/auth/login').send({
         email: 'nonexistent@test.com',
-        password: 'password123',
+        password: 'Password123!',
       });
 
       expect(res.status).toBe(401);
@@ -111,7 +111,7 @@ describe('User Routes Integration', () => {
     it('should return 400 for invalid email format', async () => {
       const res = await request(app).post('/api/auth/login').send({
         email: 'invalid-email',
-        password: 'password123',
+        password: 'Password123!',
       });
 
       expect(res.status).toBe(400);
