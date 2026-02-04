@@ -39,7 +39,7 @@ describe('UserService', () => {
     it('should register a new user successfully', async () => {
       const registerData = {
         email: 'test@example.com',
-        password: 'password123',
+        password: 'Password123!',
         name: 'Test User',
       };
 
@@ -74,7 +74,7 @@ describe('UserService', () => {
     it('should throw error if user already exists', async () => {
       const registerData = {
         email: 'existing@example.com',
-        password: 'password123',
+        password: 'Password123!',
         name: 'Existing User',
       };
 
@@ -102,10 +102,10 @@ describe('UserService', () => {
       (bcrypt.compare as jest.Mock).mockResolvedValue(true);
       (jwt.sign as jest.Mock).mockReturnValue('mock_jwt_token');
 
-      const result = await UserService.login('test@example.com', 'password123');
+      const result = await UserService.login('test@example.com', 'Password123!');
 
       expect(db.users.findOne).toHaveBeenCalledWith({ email: 'test@example.com' });
-      expect(bcrypt.compare).toHaveBeenCalledWith('password123', mockUser.password);
+      expect(bcrypt.compare).toHaveBeenCalledWith('Password123!', mockUser.password);
       expect(jwt.sign).toHaveBeenCalled();
       expect(result.token).toBe('mock_jwt_token');
       expect(result.user).not.toHaveProperty('password');
@@ -114,7 +114,7 @@ describe('UserService', () => {
     it('should throw error if user not found', async () => {
       (db.users.findOne as jest.Mock).mockResolvedValue(null);
 
-      await expect(UserService.login('notfound@example.com', 'password123')).rejects.toThrow(
+      await expect(UserService.login('notfound@example.com', 'Password123!')).rejects.toThrow(
         'Invalid credentials',
       );
     });

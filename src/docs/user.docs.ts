@@ -20,6 +20,8 @@
  *                 format: email
  *               password:
  *                 type: string
+ *                 description: Must be at least 8 characters, containing 1 uppercase, 1 lowercase, 1 number, and 1 special character.
+ *                 example: Password123!
  *               name:
  *                 type: string
  *     responses:
