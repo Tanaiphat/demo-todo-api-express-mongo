@@ -23,6 +23,7 @@ export type TaskPriorityType = (typeof TaskPriority)[keyof typeof TaskPriority];
 
 export interface Task {
   _id: ObjectId;
+  userId: ObjectId;
   title: string;
   description?: string;
   status: TaskStatusType;
@@ -33,7 +34,7 @@ export interface Task {
 }
 
 export type CreateTaskInput = Omit<Task, '_id' | 'createdAt' | 'updatedAt'>;
-export type UpdateTaskInput = Partial<Omit<Task, '_id' | 'createdAt' | 'updatedAt'>>;
+export type UpdateTaskInput = Partial<Omit<Task, '_id' | 'userId' | 'createdAt' | 'updatedAt'>>;
 
 // ============ Zod Schemas ============
 
@@ -56,3 +57,23 @@ export const UpdateTaskSchema = z.object({
 // Inferred types from Zod schemas
 export type CreateTaskDTO = z.infer<typeof CreateTaskSchema>;
 export type UpdateTaskDTO = z.infer<typeof UpdateTaskSchema>;
+
+// ============ Query Options ============
+
+export interface TaskQueryOptions {
+  status?: TaskStatusType;
+  priority?: TaskPriorityType;
+  sortBy?: 'createdAt' | 'updatedAt' | 'dueDate' | 'priority';
+  order?: 'asc' | 'desc';
+  page?: number;
+  limit?: number;
+}
+
+export const TaskQuerySchema = z.object({
+  status: z.enum(['pending', 'in_progress', 'completed']).optional(),
+  priority: z.enum(['low', 'medium', 'high']).optional(),
+  sortBy: z.enum(['createdAt', 'updatedAt', 'dueDate', 'priority']).optional(),
+  order: z.enum(['asc', 'desc']).optional(),
+  page: z.coerce.number().int().positive().optional(),
+  limit: z.coerce.number().int().positive().max(100).optional(),
+});

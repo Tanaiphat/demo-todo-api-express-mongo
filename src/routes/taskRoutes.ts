@@ -1,9 +1,12 @@
 import { Router } from 'express';
 import { TaskController } from '../controllers/taskController';
+import { authenticate } from '../middleware/authMiddleware';
 
 const router = Router();
 
-// GET /api/tasks - Get all tasks
+// All task routes require authentication
+router.use(authenticate);
+
 router.get('/', TaskController.getTasks);
 
 // GET /api/tasks/:id - Get a single task
