@@ -6,7 +6,7 @@ const options: swaggerJSDoc.Options = {
     openapi: '3.0.0',
     info: {
       title: 'To-Do API (Express + MongoDB)',
-      version: '1.0.0',
+      version: '1.1.0',
       description:
         'A robust REST API for managing tasks and users, built with Node.js, Express, and MongoDB.',
     },

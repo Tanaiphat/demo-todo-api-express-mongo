@@ -1,6 +1,6 @@
 {
   "name": "to-do-api-express-mongo",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "An example Express & TypeScript To-Do API powered by the MongoDB Native Driver.",
   "main": "index.js",
   "scripts": {
