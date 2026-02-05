@@ -7,6 +7,7 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/src/server.js",
+    "lint": "eslint . --fix",
     "test": "MONGO_URI=mongodb://localhost:27017/todo_api_test jest --passWithNoTests",
     "prepare": "husky"
   },
@@ -53,6 +54,7 @@
     "@typescript-eslint/parser": "^8.53.1",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-security": "^3.0.1",
     "husky": "^9.1.7",
     "jest": "^30.2.0",
     "lint-staged": "^16.2.7",
