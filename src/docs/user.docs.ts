@@ -3,6 +3,7 @@
  * /auth/register:
  *   post:
  *     summary: Register a new user
+ *     operationId: registerUser
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -44,6 +45,7 @@
  * /auth/login:
  *   post:
  *     summary: Login a user
+ *     operationId: loginUser
  *     tags: [Auth]
  *     requestBody:
  *       required: true

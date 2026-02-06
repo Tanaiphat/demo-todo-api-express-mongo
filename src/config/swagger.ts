@@ -9,12 +9,21 @@ const options: swaggerJSDoc.Options = {
       version: '1.1.0',
       description:
         'A robust REST API for managing tasks and users, built with Node.js, Express, and MongoDB.',
+      contact: {
+        name: 'API Support',
+        email: 'support@example.com',
+      },
     },
     servers: [
       {
         url: `http://localhost:${env.PORT}/api`,
         description: 'Development Server',
       },
+    ],
+    tags: [
+      { name: 'Auth', description: 'Authentication endpoints' },
+      { name: 'Stats', description: 'User statistics' },
+      { name: 'Tasks', description: 'Task management endpoints' },
     ],
     components: {
       securitySchemes: {
@@ -58,7 +67,7 @@ const options: swaggerJSDoc.Options = {
       },
     ],
   },
-  apis: ['./src/docs/*.ts'], // Path to the API docs
+  apis: ['src/docs/*.ts'], // Relative to project root when running
 };
 
 export const swaggerSpec = swaggerJSDoc(options);

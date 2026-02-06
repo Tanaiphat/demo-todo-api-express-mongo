@@ -3,6 +3,7 @@
  * /stats:
  *   get:
  *     summary: Get task statistics for the authenticated user
+ *     operationId: getTaskStats
  *     tags: [Stats]
  *     security:
  *       - bearerAuth: []
