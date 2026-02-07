@@ -53,6 +53,17 @@ npm run dev
 # API Docs available at http://localhost:3000/api/docs
 ```
 
+### 5. Production Build & Start
+
+```bash
+# Build the project (Outputs to dist/)
+npm run build
+
+# Start the production server
+npm start
+# Ensure NODE_ENV=production in your environment
+```
+
 ## 📚 API Documentation
 
 Interactive documentation is available via **Swagger UI**.
