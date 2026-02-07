@@ -6,8 +6,8 @@
  */
 
 import { MongoClient } from 'mongodb';
-import { env } from '../config/env';
-import { TaskStatus, TaskPriority } from '../models/task';
+import { env } from '../../config/env';
+import { TaskStatus, TaskPriority } from '../../models/task';
 import bcrypt from 'bcrypt';
 
 const TASKS_TO_CREATE = 10000;
