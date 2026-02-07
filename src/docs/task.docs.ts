@@ -3,6 +3,7 @@
  * /tasks:
  *   get:
  *     summary: Retrieve all tasks
+ *     operationId: getTasks
  *     tags: [Tasks]
  *     security:
  *       - bearerAuth: []
@@ -52,6 +53,7 @@
  *                       type: integer
  *   post:
  *     summary: Create a new task
+ *     operationId: createTask
  *     tags: [Tasks]
  *     security:
  *       - bearerAuth: []
@@ -91,6 +93,7 @@
  * /tasks/{id}:
  *   get:
  *     summary: Get a task by ID
+ *     operationId: getTaskById
  *     tags: [Tasks]
  *     security:
  *       - bearerAuth: []
@@ -117,6 +120,7 @@
  *         description: Task not found
  *   put:
  *     summary: Update a task
+ *     operationId: updateTask
  *     tags: [Tasks]
  *     security:
  *       - bearerAuth: []
@@ -161,6 +165,7 @@
  *         description: Task not found
  *   delete:
  *     summary: Delete a task
+ *     operationId: deleteTask
  *     tags: [Tasks]
  *     security:
  *       - bearerAuth: []
@@ -180,6 +185,7 @@
  * /tasks/{id}/toggle:
  *   patch:
  *     summary: Toggle task status
+ *     operationId: toggleTaskStatus
  *     tags: [Tasks]
  *     security:
  *       - bearerAuth: []

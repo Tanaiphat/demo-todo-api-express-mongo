@@ -9,6 +9,7 @@ import taskRoutes from './routes/taskRoutes';
 import userRoutes from './routes/userRoutes';
 import statsRoutes from './routes/statsRoutes';
 import { errorHandler } from './middleware/errorHandler';
+import { apiLimiter, authLimiter } from './middleware/rateLimiter';
 
 const app = express();
 
@@ -20,6 +21,11 @@ app.use(pinoHttp({ logger }));
 
 // Swagger UI
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// Expose raw Swagger JSON for verification
+app.get('/api/docs.json', (_req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
 
 // Health Check
 app.get('/health', (_req, res) => {
@@ -27,9 +33,9 @@ app.get('/health', (_req, res) => {
 });
 
 // API Routes
-app.use('/api/auth', userRoutes);
-app.use('/api/tasks', taskRoutes);
-app.use('/api/stats', statsRoutes);
+app.use('/api/auth', authLimiter, userRoutes);
+app.use('/api/tasks', apiLimiter, taskRoutes);
+app.use('/api/stats', apiLimiter, statsRoutes);
 
 // Global Error Handler (must be last)
 app.use(errorHandler);

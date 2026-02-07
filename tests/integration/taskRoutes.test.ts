@@ -19,7 +19,7 @@ describe('Task Routes Integration', () => {
     // Register and login a user to get a token
     const testUser = {
       email: 'tasktest@example.com',
-      password: 'password123',
+      password: 'Password123!',
       name: 'Task Tester',
     };
 
@@ -158,7 +158,7 @@ describe('Task Routes Integration', () => {
       // Create User B
       const userB = {
         email: 'userb@example.com',
-        password: 'password123',
+        password: 'Password123!',
         name: 'User B',
       };
       await request(app).post('/api/auth/register').send(userB);
